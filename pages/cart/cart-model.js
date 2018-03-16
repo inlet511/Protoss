@@ -1,39 +1,58 @@
-import {Base} from '../../utils/base.js';
+import { Base } from '../../utils/base.js';
 
-class Cart extends Base{
+class Cart extends Base {
 
-    constructor(){
+    constructor() {
         super();
-        this._storageKeyName='cart';
+        this._storageKeyName = 'cart';
     }
     //加入到购物车
-    add(item,counts){
+    add(item, counts) {
         var cartData = this.getCartDataFromLocal();
-        var bHasInfo = this._productInCart(item.id,cartData);
-        if(bHasInfo.index==-1){
+        var bHasInfo = this._productInCart(item.id, cartData);
+        if (bHasInfo.index == -1) {
             item.counts = counts;
             item.selectedStatus = true;//表示选中状态
             cartData.push(item);
         }
-        else
-        {
-            cartData[bHasInfo.index].counts +=counts;
+        else {
+            cartData[bHasInfo.index].counts += counts;
 
         }
-        wx.setStorageSync(this._storageKeyName,cartData);
+        wx.setStorageSync(this._storageKeyName, cartData);
     }
 
     /**
      * 从缓存中读取购物车数据
      */
-    getCartDataFromLocal(){
+    getCartDataFromLocal() {
         var res = wx.getStorageSync(this._storageKeyName);
-        if(!res){
-            res=[];
+        if (!res) {
+            res = [];
         }
         return res;
     }
 
+    /**
+     * 计算购物车内商品总数
+     * flag:true 考虑商品选择状态 false 忽略商品选择状态
+     */
+    getCartTotalCounts(flag) {
+        var data = this.getCartDataFromLocal();
+        var counts = 0;
+
+        for (let i = 0; i < data.length; i++) {
+            if (flag) {
+                if (data[i].selectedStatus) {
+                    counts += data[i].counts;
+                }
+            }else
+            {
+                counts += data[i].counts;
+            }
+        }
+        return counts;
+    }
 
     /**
      * 
@@ -41,16 +60,16 @@ class Cart extends Base{
      * @param {int} id  商品序号
      * @param {array} arr 购物车的商品数组
      */
-    _productInCart(id,arr){
+    _productInCart(id, arr) {
         var item = {};
-        var result = {index:-1};
+        var result = { index: -1 };
         console.log(arr);
-        for(let i = 0; i<arr.length; i++){
+        for (let i = 0; i < arr.length; i++) {
             item = arr[i];
-            if(item.id == id){
+            if (item.id == id) {
                 result = {
-                    index:i,
-                    data:item
+                    index: i,
+                    data: item
                 };
                 break;
             }
@@ -59,4 +78,4 @@ class Cart extends Base{
     }
 }
 
-export {Cart}
+export { Cart }

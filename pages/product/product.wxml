@@ -5,6 +5,7 @@
     <view class="fixed-btns-box">
       <view class="fixed-cart">
         <image src="../../imgs/icon/cart@top.png"></image>
+        <view wx:if="{{cartTotalCounts>0}}">{{cartTotalCounts}}</view>
       </view>
     </view>
 

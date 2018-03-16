@@ -190,10 +190,16 @@
 .product-detail-box{
   padding-bottom: 20rpx;
 }
+
 .product-detail-imgs image{
   width: 100%;
   height:400rpx;
   float: left;
+}
+
+.product-detail-box image{
+    width:100%;
+    display:block;
 }
 
 .product-detail-properties,.product-detail-protect{

@@ -38,6 +38,12 @@
 					"name": "分类",
 					"pathName": "pages/category/category",
 					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "购物车",
+					"pathName": "pages/cart/cart",
+					"query": ""
 				}
 			]
 		}
