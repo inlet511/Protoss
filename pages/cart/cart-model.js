@@ -25,11 +25,23 @@ class Cart extends Base {
     /**
      * 从缓存中读取购物车数据
      */
-    getCartDataFromLocal() {
+    getCartDataFromLocal(flag=false) {        
         var res = wx.getStorageSync(this._storageKeyName);
         if (!res) {
             res = [];
         }
+
+        if(flag){
+            var newRes=[];
+            for(let i = 0 ; i<res.length; i++)
+            {
+                if(res[i].selectedStatus){
+                    newRes.push(res[i]);
+                }
+            }
+            res = newRes;
+        }
+
         return res;
     }
 
@@ -46,12 +58,48 @@ class Cart extends Base {
                 if (data[i].selectedStatus) {
                     counts += data[i].counts;
                 }
-            }else
-            {
+            } else {
                 counts += data[i].counts;
             }
         }
         return counts;
+    }
+
+    _changeCounts(id, counts) {
+        var cartData = this.getCartDataFromLocal();
+        var hasInfo = this._productInCart(id, cartData);
+        if (hasInfo.index != -1) {
+            if (hasInfo.data.counts > 1) {
+                cartData[hasInfo.index].counts += counts;
+            }
+        }
+        wx.setStorageSync(this._storageKeyName,cartData);
+    }
+
+    addCounts(id)
+    {
+        this._changeCounts(id,1);
+    }
+
+    cutCounts(id)
+    {
+        this._changeCounts(id,-1);
+    }
+
+    delete(ids){
+        if(!(ids instanceof Array)){
+            ids=[ids];
+        }
+        var cartData = this.getCartDataFromLocal();
+        for(let i = 0; i<ids.length; i++)
+        {
+            var hasInfo = this._productInCart(ids[i],cartData);
+            if(hasInfo.index!=-1){
+                cartData.splice(hasInfo.index,1);
+            }
+        }
+
+        wx.setStorageSync(this._storageKeyName,cartData);
     }
 
     /**
@@ -63,7 +111,6 @@ class Cart extends Base {
     _productInCart(id, arr) {
         var item = {};
         var result = { index: -1 };
-        console.log(arr);
         for (let i = 0; i < arr.length; i++) {
             item = arr[i];
             if (item.id == id) {
@@ -75,6 +122,10 @@ class Cart extends Base {
             }
         }
         return result
+    }
+
+    execSetStorageSync(data){
+        wx.setStorageSync(this._storageKeyName,data);
     }
 }
 

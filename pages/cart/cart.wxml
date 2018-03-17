@@ -4,7 +4,7 @@
             <block wx:for="{{cartData}}">
                 <view class="cart-item {{deleteFlag&&index==currentIndex?'showDeleteBtn':'hideDeleteBtn'}}">
                     <view class="cart-item-main" data-id="{{item.id}}" data-index="{{index}}">
-                        <view class="cart-item-checkbox" ontap="toggleSelect" data-id="{{item.id}}" data-status="{{item.selectedStatus}}">
+                        <view class="cart-item-checkbox" bindtap="toggleSelect" data-id="{{item.id}}" data-status="{{item.selectedStatus}}">
                             <image wx:if="{{item.selectedStatus}}" src="../../imgs/icon/circle@selected.png"></image>
                             <image wx:else src="../../imgs/icon/circle@noselected.png"></image>
                         </view>
@@ -30,16 +30,16 @@
             </block>
         </view>
         <view class="footer-account-box all-accounts-box">
-            <view class="all-select" ontap="toggleSelectAll" data-status="{{selectedTypeCounts==cartData.length?'true':'false'}}">
+            <view class="all-select" bindtap="toggleSelectAll" data-status="{{selectedTypeCounts==cartData.length?'true':'false'}}">
                 <image wx:if="{{selectedTypeCounts==cartData.length}}" class="title-icon" src="../../imgs/icon/all@selected.png"></image>
                 <image wx:else class="title-icon" src="../../imgs/icon/all.png"></image>
                 <text>全选({{selectedCounts}})</text>
             </view>
-            <view class="all-price-submit {{account==0?'disabled':''}}" bindtap="submitOrder">
+            <view class="all-price-submit {{totalPrice==0?'disabled':''}}" bindtap="submitOrder">
                 <view class="accounts-btn">下单</view>
-                <view class="price-text">￥{{account}}</view>
+                <view class="price-text">￥{{totalPrice}}</view>
                 <view class="arrow-icon">
-                    <image wx:if="{{account==0}}" src="../../imgs/icon/arrow@grey.png"></image>
+                    <image wx:if="{{totalPrice==0}}" src="../../imgs/icon/arrow@grey.png"></image>
                     <image wx:else src="../../imgs/icon/arrow.png"></image>
                 </view>
             </view>

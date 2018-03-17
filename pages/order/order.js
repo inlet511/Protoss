@@ -1,66 +1,73 @@
 // pages/order/order.js
+import { Cart } from "../cart/cart-model.js"
+// import {Order} from "../order/order-model.js"
+import { Address } from "../../utils/address.js"
+
+var cart = new Cart();
+// var order = new Order();
+var address = new Address();
+
 Page({
 
-  /**
-   * 页面的初始数据
-   */
-  data: {
-  
-  },
+    /**
+     * 页面的初始数据
+     */
+    data: {
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function (options) {
-  
-  },
+    },
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-  
-  },
+    /**
+     * 生命周期函数--监听页面加载
+     */
+    onLoad: function (options) {
+        var productsArr;
+        this.data.totalPrice = options.totalPrice;
+        productsArr = cart.getCartDataFromLocal(true);
+        this.setData({
+            productsArr: productsArr,
+            totalPrice: options.totalPrice,
+            orderStatus: 0
+        });
+    },
 
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-  
-  },
+    editAddress: function () {
+        wx.chooseAddress({
+            success: (res) => {
+                var addressInfo = {
+                    name: res.userName,
+                    mobile: res.telNumber,
+                    totalDetail: address.setAddressInfo(res)
+                }
+                this._bindAddressInfo(addressInfo);
 
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-  
-  },
+                address.submitAddress(res, (flag) => {
+                    if (!flag) {
+                        this.showTips('操作提示', '地址信息更新失败');
+                    }
+                });
+            }
+        });
+    },
 
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-  
-  },
+    showTips: function (title, content, flag) {
+        wx.showModal({
+            title: title,
+            content: content,
+            showCancel: false,
+            success: function (res) {
+                if (flag) {
+                    wx.switchTab({
+                        url: '/pages/my/my'
+                    });
+                }
+            }
+        });
+    },
 
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-  
-  },
+    _bindAddressInfo: function (addressInfo) {
+        this.setData({
+            addressInfo: addressInfo
+        });
+    },
 
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-  
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-  
-  }
 })

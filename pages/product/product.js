@@ -66,6 +66,12 @@ Page({
         }
 
         cart.add(tempObj, this.data.productCount);
+    },
+
+    onCartTap:function(event){
+        wx.switchTab({
+            url:'/pages/cart/cart'
+        });
     }
 
 
