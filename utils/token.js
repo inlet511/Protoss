@@ -21,15 +21,17 @@ class Token {
     getTokenFromServer(callback) {
         wx.login({
             success: (res) => {
-                wx.login({
+                console.log(res);
+                wx.request({
                     url: this.tokenUrl,
                     method: 'POST',
                     data: {
                         code: res.code
                     },
-                    success: (res) => {
-                        wx.setStorageSync('token', res.data.token);
-                        callback(res.data.token);
+                    success: (res2) => {
+                        console.log(res2);
+                        wx.setStorageSync('token', res2.data.token);
+                        callback&&callback(res2.data.token);
                     }
                 })
             }

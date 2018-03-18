@@ -28,6 +28,10 @@ Page({
             totalPrice: options.totalPrice,
             orderStatus: 0
         });
+
+        address.getAddress((res)=>{
+            this._bindAddressInfo(res);
+        });
     },
 
     editAddress: function () {

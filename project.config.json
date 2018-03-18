@@ -9,7 +9,7 @@
 	},
 	"compileType": "miniprogram",
 	"libVersion": "1.9.91",
-	"appid": "wxe3f44e1c47a10a09",
+	"appid": "wx2d313bea9989930e",
 	"projectname": "Protoss",
 	"condition": {
 		"search": {
@@ -17,6 +17,10 @@
 			"list": []
 		},
 		"conversation": {
+			"current": -1,
+			"list": []
+		},
+		"plugin": {
 			"current": -1,
 			"list": []
 		},
